@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Bug Report Screenshot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .bug-screenshot {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f9f9f9;
+        }
+        .error-box {
+            background: #fee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .error-title {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .error-message {
+            color: #666;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .stack-trace {
+            background: #1e1e1e;
+            color: #f44336;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .info {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐛 Bug Report Screenshot Generator</h1>
+        
+        <div id="bugContent" class="bug-screenshot">
+            <div class="error-box">
+                <div class="error-title">❌ TypeError: Cannot read property 'data' of undefined</div>
+                <div class="error-message">
+                    The application crashed when attempting to load user profile data.
+                    <br><br>
+                    <strong>Steps to reproduce:</strong><br>
+                    1. Navigate to /profile page<br>
+                    2. Click on "Edit Profile" button<br>
+                    3. Application displays white screen<br>
+                    <br>
+                    <strong>Expected:</strong> Profile page should load successfully<br>
+                    <strong>Actual:</strong> White screen with console error
+                </div>
+                <div class="stack-trace">
+TypeError: Cannot read property 'data' of undefined
+    at ProfilePage.componentDidMount (ProfilePage.jsx:45:23)
+    at commitLifeCycles (react-dom.js:20663)
+    at commitLayoutEffects (react-dom.js:23426)
+    at HTMLUnknownElement.callCallback (react-dom.js:3945)
+    at Object.invokeGuardedCallbackDev (react-dom.js:3994)
+    at invokeGuardedCallback (react-dom.js:4056)
+    at commitRoot (react-dom.js:23641)
+    at performSyncWorkOnRoot (react-dom.js:22269)
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button onclick="downloadImage()">📥 Download as PNG</button>
+            <button onclick="generateNew()">🔄 Generate Different Bug</button>
+        </div>
+
+        <div class="info">
+            Right-click the bug screenshot above and "Save Image As..." or use the download button.
+        </div>
+    </div>
+
+    <script>
+        const bugs = [
+            {
+                title: "TypeError: Cannot read property 'data' of undefined",
+                description: "The application crashed when attempting to load user profile data.",
+                steps: "1. Navigate to /profile page\n2. Click on 'Edit Profile' button\n3. Application displays white screen",
+                expected: "Profile page should load successfully",
+                actual: "White screen with console error",
+                stack: `TypeError: Cannot read property 'data' of undefined
+    at ProfilePage.componentDidMount (ProfilePage.jsx:45:23)
+    at commitLifeCycles (react-dom.js:20663)
+    at commitLayoutEffects (react-dom.js:23426)
+    at HTMLUnknownElement.callCallback (react-dom.js:3945)
+    at Object.invokeGuardedCallbackDev (react-dom.js:3994)
+    at invokeGuardedCallback (react-dom.js:4056)
+    at commitRoot (react-dom.js:23641)
+    at performSyncWorkOnRoot (react-dom.js:22269)`
+            },
+            {
+                title: "ReferenceError: axios is not defined",
+                description: "API request fails during form submission.",
+                steps: "1. Fill out contact form\n2. Click Submit button\n3. Form fails to submit",
+                expected: "Form should submit successfully and show confirmation",
+                actual: "Console shows 'axios is not defined' error",
+                stack: `ReferenceError: axios is not defined
+    at ContactForm.handleSubmit (ContactForm.jsx:89:5)
+    at HTMLFormElement.callCallback (react-dom.js:188)
+    at Object.invokeGuardedCallbackDev (react-dom.js:237)
+    at invokeGuardedCallback (react-dom.js:292)
+    at executeDispatch (react-dom.js:2378)`
+            },
+            {
+                title: "Network Error: Failed to fetch",
+                description: "Unable to connect to API endpoint during login.",
+                steps: "1. Enter valid credentials\n2. Click Login button\n3. Request times out after 30s",
+                expected: "User should be logged in and redirected to dashboard",
+                actual: "Network error displayed, login fails",
+                stack: `Error: Network request failed
+    at createError (axios.js:2166)
+    at settle (axios.js:928)
+    at XMLHttpRequest.handleError (axios.js:542)
+    at XMLHttpRequest.dispatchEvent (EventTarget.js:144)
+    at XMLHttpRequest.setReadyState (XMLHttpRequest.js:219)`
+            },
+            {
+                title: "Uncaught Error: Maximum update depth exceeded",
+                description: "Infinite loop detected in component rendering.",
+                steps: "1. Navigate to dashboard\n2. Component starts rendering\n3. Browser becomes unresponsive",
+                expected: "Dashboard should render normally",
+                actual: "React throws maximum update depth error",
+                stack: `Error: Maximum update depth exceeded
+    at checkForNestedUpdates (react-dom.js:13089)
+    at scheduleUpdateOnFiber (react-dom.js:21199)
+    at dispatchAction (react-dom.js:15660)
+    at updateState (Dashboard.jsx:28:5)
+    at Dashboard (Dashboard.jsx:15:3)`
+            }
+        ];
+
+        let currentBugIndex = 0;
+
+        function generateNew() {
+            currentBugIndex = (currentBugIndex + 1) % bugs.length;
+            const bug = bugs[currentBugIndex];
+            
+            document.querySelector('.error-title').innerHTML = `❌ ${bug.title}`;
+            document.querySelector('.error-message').innerHTML = `
+                ${bug.description}
+                <br><br>
+                <strong>Steps to reproduce:</strong><br>
+                ${bug.steps.replace(/\n/g, '<br>')}<br>
+                <br>
+                <strong>Expected:</strong> ${bug.expected}<br>
+                <strong>Actual:</strong> ${bug.actual}
+            `;
+            document.querySelector('.stack-trace').textContent = bug.stack;
+        }
+
+        async function downloadImage() {
+            const element = document.getElementById('bugContent');
+            
+            // Use html2canvas if available, otherwise show instructions
+            if (typeof html2canvas === 'undefined') {
+                alert('To use auto-download:\n1. Right-click on the bug screenshot\n2. Select "Save Image As..."\n3. Save as PNG or JPG\n\nOr take a screenshot using:\n- Mac: Cmd + Shift + 4\n- Windows: Win + Shift + S\n- Linux: PrtScn or Shift + PrtScn');
+                return;
+            }
+            
+            const canvas = await html2canvas(element);
+            const link = document.createElement('a');
+            link.download = `bug-screenshot-${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "multimodal-bug-summarizer",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "bootstrap": "yarn install",
+    "start:dev": "concurrently \"yarn --cwd packages/backend dev\" \"yarn --cwd packages/frontend dev\"",
+    "build": "yarn --cwd packages/frontend build && yarn --cwd packages/backend build",
+    "lint": "eslint . --ext .js,.jsx"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "eslint": "^9.14.0",
+    "prettier": "^3.3.3"
+  }
+}

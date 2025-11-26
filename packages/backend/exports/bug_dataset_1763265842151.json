@@ -1,0 +1,400 @@
+{
+  "metadata": {
+    "name": "Multimodal Bug Report Dataset",
+    "version": "1.0.0",
+    "created_at": "2025-11-16T04:04:02.151Z",
+    "description": "A dataset of bug reports with AI-generated summaries, stack traces, and screenshots",
+    "total_samples": 12,
+    "license": "MIT",
+    "citation": "Please cite this dataset when using it in research",
+    "features": {
+      "text": [
+        "title",
+        "description",
+        "stacktrace"
+      ],
+      "structured": [
+        "environment",
+        "bugCategory",
+        "status"
+      ],
+      "multimodal": []
+    }
+  },
+  "data": [
+    {
+      "id": "sample_1",
+      "input": {
+        "title": "Login API returns 200 OK but user session not created",
+        "description": "The frontend calls /api/login with valid credentials and receives a 200 OK response with a JSON token. \r\nHowever, the session cookie is not set, and subsequent authenticated requests fail with 401 Unauthorized. \r\n\r\nSteps to reproduce:\r\n1. Start the dev server.\r\n2. Go to the login page.\r\n3. Enter valid credentials (***@***.com / password123).\r\n4. Observe that the login response is 200 OK with { \"token\": \"abc123\" }.\r\n5. Try accessing /api/user/profile — returns 401 Unauthorized.\r\n6. No cookie or Authorization header is persisted in browser storage.\r\n\r\nExpected: Successful login should create a session or store JWT for authenticated requests.\r\nActual: Login endpoint responds with success, but the session is never established.",
+        "stacktrace": "POST /api/login 200 58ms\r\nError: Unauthorized: Missing session cookie\r\n    at authMiddleware (src/middleware/auth.js:23:15)\r\n    at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)\r\n    at next (node_modules/express/lib/router/route.js:144:13)\r\n    at Route.dispatch (node_modules/express/lib/router/route.js:114:3)\r\n    at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)",
+        "environment": {
+          "os": "Linux",
+          "browser": "Chrome",
+          "browserVersion": "22.04"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Linux, Browser: Chrome 22.04",
+        "actualBehavior": "login endpoint responds with success, but the session is never established. post /api/login 200 58ms",
+        "expectedBehavior": "successful login should create a session or store jwt for authenticated requests.",
+        "bugCategory": "network-error",
+        "suggestedSolution": "Implement retry logic: `axios.get(url).catch(() => retry())`. Add timeout handling. For CORS: configure server with proper headers: `Access-Control-Allow-Origin`. Check network connectivity and API endpoint availability.",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-07T12:51:13.315Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_2",
+      "input": {
+        "title": "Upload fails for large images",
+        "description": "When uploading images larger than 5MB, the server returns 500 error. The error message says 'Request entity too large' but it's not shown to the user.",
+        "stacktrace": "Error: Internal Server Error (500) at upload endpoint",
+        "environment": {
+          "os": "Windows 11",
+          "browser": "Firefox",
+          "browserVersion": "121.0"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Windows 11, Browser: Firefox 121.0",
+        "actualBehavior": "Server returns 500 Internal Server Error",
+        "expectedBehavior": "Server should handle requests without errors",
+        "bugCategory": "server-error",
+        "suggestedSolution": "Increase server file upload limit. In Express: use multer with limits: { fileSize: 10 * 1024 * 1024 }. In nginx: set client_max_body_size 10M; Add proper validation and user-friendly error messages for file size limits.",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T18:25:23.691Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_3",
+      "input": {
+        "title": "500 Internal Server Error when uploading images larger than 5MB",
+        "description": "When I try to upload a screenshot larger than ~5MB using the app's bug-report form, the server responds with a 500 Internal Server Error and no helpful message to the user. Small images upload fine.\r\n\r\nSteps to reproduce:\r\n1. Open the bug report form.\r\n2. Attach a PNG screenshot larger than 5 megabytes.\r\n3. Submit the form.\r\n4. The client receives HTTP 500 and the upload fails.\r\n\r\nExpected: The server should accept files up to configured limit (e.g., 25MB), or return a clear 4xx error with a helpful message if the file is too large.\r\nActual: The server throws an uncaught error and returns HTTP 500; no user-friendly message is shown and the upload is lost.",
+        "stacktrace": "Error: request entity too large\r\n    at readStream (/usr/src/app/node_modules/raw-body/index.js:155:17)\r\n    at getRawBody (/usr/src/app/node_modules/raw-body/index.js:108:12)\r\n    at read (/usr/src/app/node_modules/body-parser/lib/read.js:77:3)\r\n    at jsonParser (/usr/src/app/node_modules/body-parser/lib/types/json.js:110:3)\r\n    at Layer.handle [as handle_request] (/usr/src/app/node_modules/express/lib/router/layer.js:95:5)\r\n    at next (/usr/src/app/node_modules/express/lib/router/route.js:144:13)\r\n    at Route.dispatch (/usr/src/app/node_modules/express/lib/router/route.js:114:3)\r\n    at Layer.handle [as handle_request] (/usr/src/app/node_modules/express/lib/router/layer.js:95:5)\r\n    at /usr/src/app/node_modules/express/lib/router/index.js:284:15\r\n    at Function.process_params (/usr/src/app/node_modules/express/lib/router/index.js:346:12)",
+        "environment": {
+          "os": "Linux",
+          "browser": null,
+          "browserVersion": "v18.16.0"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Linux",
+        "actualBehavior": "the server throws an uncaught error and returns http 500; no user-friendly message is shown and the upload is lost. error: request entity too large",
+        "expectedBehavior": "the server should accept files up to configured limit (e.g., 25mb), or return a clear 4xx error with a helpful message if the file is too large.",
+        "bugCategory": "server-error",
+        "suggestedSolution": "Increase server file upload limit. In Express: use multer with limits: { fileSize: 10 * 1024 * 1024 }. In nginx: set client_max_body_size 10M; Add proper validation and user-friendly error messages for file size limits.",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T18:21:27.368Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_4",
+      "input": {
+        "title": "App crashes when saving user profile",
+        "description": "When user clicks Save button in profile settings, the app crashes with a white screen. This happens every time.",
+        "stacktrace": "TypeError: Cannot read property 'name' of null at ProfilePage.handleSave (Profile.jsx:45)",
+        "environment": {
+          "os": "Windows 11",
+          "browser": "Chrome",
+          "browserVersion": "120.0"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Windows 11, Browser: Chrome 120.0",
+        "actualBehavior": "Application crashes or displays blank/white screen",
+        "expectedBehavior": "Application should remain stable and display content",
+        "bugCategory": "crash",
+        "suggestedSolution": "Add null checks: `if (data && data.property)` before accessing. Use optional chaining: `data?.property`. Add error boundaries: wrap components with try-catch. Verify form data is properly validated before saving.",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T18:17:07.678Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_5",
+      "input": {
+        "title": "Database connection timeout",
+        "description": "Application fails to connect to the database after 30 seconds. Users see 'Service Unavailable' error.",
+        "stacktrace": "Error: connect ETIMEDOUT ***.***.***.***:5432 at TCPConnectWrap.afterConnect",
+        "environment": {
+          "os": "Ubuntu 22.04",
+          "browser": "N/A",
+          "browserVersion": null
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Ubuntu 22.04, Browser: N/A",
+        "actualBehavior": "Application exhibits unexpected behavior",
+        "expectedBehavior": "Application should function normally",
+        "bugCategory": "unknown",
+        "suggestedSolution": "Please review the error logs and stack trace for more details",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T18:14:47.485Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_6",
+      "input": {
+        "title": "Login button not responding",
+        "description": "When I click the login button, nothing happens. The button doesn't show any visual feedback and no API call is made.",
+        "stacktrace": "Uncaught TypeError: Cannot read properties of undefined (reading 'handleLogin') at LoginButton.onClick (Login.jsx:23:15)",
+        "environment": {
+          "os": "macOS",
+          "browser": "Chrome",
+          "browserVersion": "120.0"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": null,
+      "metadata": {
+        "status": "needs-human-review",
+        "created_at": "2025-11-06T18:12:56.493Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_7",
+      "input": {
+        "title": "Dark Mode setting resets to Light after page reload",
+        "description": "When a user enables Dark Mode from the Appearance settings, the app switches to dark theme correctly. \r\nHowever, after refreshing the page or reopening the app, the theme reverts back to Light mode. \r\n\r\nSteps to reproduce:\r\n1. Log in to the app.\r\n2. Go to Settings → Appearance.\r\n3. Turn on \"Dark Mode\".\r\n4. Refresh the browser or reopen the app.\r\n5. Notice that the theme is back to Light mode.\r\n\r\nExpected: The Dark Mode preference should persist across sessions.\r\nActual: The setting resets every time the page reloads.",
+        "stacktrace": "ReferenceError: localStorage is not defined\r\n    at saveThemePreference (src/utils/theme.js:22:15)\r\n    at toggleDarkMode (src/components/AppearanceSettings.jsx:48:9)\r\n    at HTMLButtonElement.onclick (src/components/AppearanceSettings.jsx:77:18)",
+        "environment": {
+          "os": "macOS",
+          "browser": "Firefox",
+          "browserVersion": "121.0"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: macOS, Browser: Firefox 121.0",
+        "actualBehavior": "the setting resets every time the page reloads. referenceerror: localstorage is not defined",
+        "expectedBehavior": "the dark mode preference should persist across sessions.",
+        "bugCategory": "unknown",
+        "suggestedSolution": "Please review the error logs and stack trace for more details",
+        "model": {
+          "name": "mock-trainer",
+          "version": "0.2"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T17:53:12.689Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_8",
+      "input": {
+        "title": "App crashes when saving profile",
+        "description": "When clicking Save button in Settings, the app shows a white screen",
+        "stacktrace": "TypeError: Cannot read property 'value' of undefined at SettingsPage.jsx:45",
+        "environment": {
+          "os": "Windows 11",
+          "browser": "Chrome",
+          "browserVersion": "119.0"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Windows 11, Browser: Chrome 119.0",
+        "actualBehavior": "Application crashes or displays blank/white screen",
+        "expectedBehavior": "Application should remain stable and display content",
+        "bugCategory": "crash",
+        "suggestedSolution": "Check for null/undefined values before accessing properties. Add defensive checks like `if (element && element.value)` before using DOM elements. Verify event handlers are properly bound.",
+        "model": {
+          "name": "mock-trainer",
+          "version": "0.2"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T17:51:08.063Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_9",
+      "input": {
+        "title": "Settings Save Button Crash",
+        "description": "User clicks Save in Settings and app crashes with white screen",
+        "stacktrace": "TypeError: Cannot read property 'save' of undefined at SettingsPage.jsx:45",
+        "environment": {
+          "os": "Windows 11",
+          "browser": "Chrome",
+          "browserVersion": "119.0.6045.140"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Windows 11, Browser: Chrome 119.0.6045.140",
+        "actualBehavior": "Mocked actual behavior — check stacktrace",
+        "expectedBehavior": "Mocked expected behavior",
+        "bugCategory": "mock-category",
+        "suggestedSolution": "Mocked suggestion",
+        "model": {
+          "name": "mock-trainer",
+          "version": "0.1"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T17:43:07.977Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_10",
+      "input": {
+        "title": "App crashes when clicking Save",
+        "description": "The app shows a white screen when I click Save in Settings",
+        "stacktrace": "Error: Cannot read property 'save' of undefined at SettingsPage.jsx:45",
+        "environment": {
+          "os": "Windows 11",
+          "browser": "Chrome",
+          "browserVersion": "119.0"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Windows 11, Browser: Chrome 119.0",
+        "actualBehavior": "Application crashes or displays blank/white screen",
+        "expectedBehavior": "Application should remain stable and display content",
+        "bugCategory": "crash",
+        "suggestedSolution": "Add null checks: `if (data && data.property)` before accessing. Use optional chaining: `data?.property`. Add error boundaries: wrap components with try-catch. Verify form data is properly validated before saving.",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T17:41:30.742Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_11",
+      "input": {
+        "title": "App crashes when clicking \"Save\" on the Settings page",
+        "description": "When I open the Settings page and click the Save button after updating my display name, the entire app crashes and I see a blank white screen. This happens every time I try to save new profile information. I tried reloading the page and re-opening the app, but the error occurs consistently. Steps to reproduce:\r\n\r\n1. Log in as any user.\r\n2. Go to Settings → Profile.\r\n3. Change the Display Name field.\r\n4. Click the Save button.\r\n5. Observe the app crash / white screen.\r\n\r\nExpected: the profile should save and a success toast should appear.\r\nActual: the app crashes and the page goes white.",
+        "stacktrace": "TypeError: Cannot read property 'value' of undefined\r\n    at SaveButton.handleClick (src/components/Settings/SaveButton.jsx:45:27)\r\n    at HTMLUnknownElement.callCallback (node_modules/react-dom/cjs/react-dom.development.js:390:14)\r\n    at Object.invokeGuardedCallbackDev (node_modules/react-dom/cjs/react-dom.development.js:439:16)\r\n    at invokeGuardedCallback (node_modules/react-dom/cjs/react-dom.development.js:496:31)\r\n    at commitRootImpl (node_modules/react-dom/cjs/react-dom.development.js:22365:11)\r\n    at unstable_runWithPriority (node_modules/scheduler/cjs/scheduler.development.js:653:12)\r\n    at runWithPriority$1 (node_modules/react-dom/cjs/react-dom.development.js:11039:10)\r\n    at commitRoot (node_modules/react-dom/cjs/react-dom.development.js:22099:3)",
+        "environment": {
+          "os": "Windows",
+          "browser": "Chrome",
+          "browserVersion": "119.0.6045.140"
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: Windows, Browser: Chrome 119.0.6045.140",
+        "actualBehavior": "the app crashes and the page goes white. typeerror: cannot read property 'value' of undefined",
+        "expectedBehavior": "the profile should save and a success toast should appear.",
+        "bugCategory": "crash",
+        "suggestedSolution": "Add null checks: `if (data && data.property)` before accessing. Use optional chaining: `data?.property`. Add error boundaries: wrap components with try-catch. Verify form data is properly validated before saving.",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T17:38:58.728Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    },
+    {
+      "id": "sample_12",
+      "input": {
+        "title": "Test Bug",
+        "description": "This is a test bug",
+        "stacktrace": "Error at line 10",
+        "environment": {
+          "os": "macOS",
+          "browser": "Chrome",
+          "browserVersion": null
+        },
+        "screenshots": [],
+        "screenshot_count": 0
+      },
+      "output": {
+        "environment": "OS: macOS, Browser: Chrome",
+        "actualBehavior": "Application exhibits unexpected behavior",
+        "expectedBehavior": "Application should function normally",
+        "bugCategory": "unknown",
+        "suggestedSolution": "Please review the error logs and stack trace for more details",
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "1.0"
+        }
+      },
+      "metadata": {
+        "status": "completed",
+        "created_at": "2025-11-06T17:13:35.508Z",
+        "has_stacktrace": true,
+        "has_screenshots": false
+      }
+    }
+  ]
+}

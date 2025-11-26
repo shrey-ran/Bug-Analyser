@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Multimodal Bug Report Dataset</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    h1 {
+      color: #2563eb;
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #4f46e5;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    h3 {
+      color: #6366f1;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    .metadata {
+      background-color: #f3f4f6;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+    .metadata p {
+      margin: 5px 0;
+    }
+    .report {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      background-color: #fafafa;
+      page-break-inside: avoid;
+    }
+    .report-header {
+      background-color: #eef2ff;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+    .report-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1e40af;
+      margin-bottom: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    .badge-analyzed {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+    .badge-pending {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    .section {
+      margin: 15px 0;
+    }
+    .section-label {
+      font-weight: bold;
+      color: #6b7280;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .section-content {
+      background-color: white;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    }
+    .stacktrace {
+      background-color: #1f2937;
+      color: #10b981;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .env-tag {
+      display: inline-block;
+      background-color: #dbeafe;
+      color: #1e40af;
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin-right: 8px;
+      font-size: 13px;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #e5e7eb;
+      text-align: center;
+      color: #6b7280;
+      font-size: 12px;
+    }
+    @media print {
+      body {
+        max-width: 100%;
+      }
+      .report {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Multimodal Bug Report Dataset</h1>
+  
+  <div class="metadata">
+    <p><strong>Version:</strong> 1.0.0</p>
+    <p><strong>Created:</strong> 11/16/2025, 3:48:00 AM</p>
+    <p><strong>Total Samples:</strong> 12</p>
+    <p><strong>Description:</strong> A dataset of bug reports with AI-generated summaries, stack traces, and screenshots</p>
+    <p><strong>License:</strong> MIT</p>
+  </div>
+
+  <h2>Bug Reports</h2>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">1. Login API returns 200 OK but user session not created</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">The frontend calls /api/login with valid credentials and receives a 200 OK response with a JSON token. 
+However, the session cookie is not set, and subsequent authenticated requests fail with 401 Unauthorized. 
+
+Steps to reproduce:
+1. Start the dev server.
+2. Go to the login page.
+3. Enter valid credentials (***@***.com / password123).
+4. Observe that the login response is 200 OK with { &quot;token&quot;: &quot;abc123&quot; }.
+5. Try accessing /api/user/profile — returns 401 Unauthorized.
+6. No cookie or Authorization header is persisted in browser storage.
+
+Expected: Successful login should create a session or store JWT for authenticated requests.
+Actual: Login endpoint responds with success, but the session is never established.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Linux</span>
+        <span class="env-tag">🌐 Chrome 22.04</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">POST /api/login 200 58ms
+Error: Unauthorized: Missing session cookie
+    at authMiddleware (src/middleware/auth.js:23:15)
+    at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+    at next (node_modules/express/lib/router/route.js:144:13)
+    at Route.dispatch (node_modules/express/lib/router/route.js:114:3)
+    at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>network-error</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>login endpoint responds with success, but the session is never established. post /api/login 200 58ms</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>successful login should create a session or store jwt for authenticated requests.</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Implement retry logic: `axios.get(url).catch(() =&gt; retry())`. Add timeout handling. For CORS: configure server with proper headers: `Access-Control-Allow-Origin`. Check network connectivity and API endpoint availability.</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">2. Upload fails for large images</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">When uploading images larger than 5MB, the server returns 500 error. The error message says &#039;Request entity too large&#039; but it&#039;s not shown to the user.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Windows 11</span>
+        <span class="env-tag">🌐 Firefox 121.0</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">Error: Internal Server Error (500) at upload endpoint</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>server-error</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>Server returns 500 Internal Server Error</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>Server should handle requests without errors</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Increase server file upload limit. In Express: use multer with limits: { fileSize: 10 * 1024 * 1024 }. In nginx: set client_max_body_size 10M; Add proper validation and user-friendly error messages for file size limits.</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">3. 500 Internal Server Error when uploading images larger than 5MB</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">When I try to upload a screenshot larger than ~5MB using the app&#039;s bug-report form, the server responds with a 500 Internal Server Error and no helpful message to the user. Small images upload fine.
+
+Steps to reproduce:
+1. Open the bug report form.
+2. Attach a PNG screenshot larger than 5 megabytes.
+3. Submit the form.
+4. The client receives HTTP 500 and the upload fails.
+
+Expected: The server should accept files up to configured limit (e.g., 25MB), or return a clear 4xx error with a helpful message if the file is too large.
+Actual: The server throws an uncaught error and returns HTTP 500; no user-friendly message is shown and the upload is lost.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Linux</span>
+        
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">Error: request entity too large
+    at readStream (/usr/src/app/node_modules/raw-body/index.js:155:17)
+    at getRawBody (/usr/src/app/node_modules/raw-body/index.js:108:12)
+    at read (/usr/src/app/node_modules/body-parser/lib/read.js:77:3)
+    at jsonParser (/usr/src/app/node_modules/body-parser/lib/types/json.js:110:3)
+    at Layer.handle [as handle_request] (/usr/src/app/node_modules/express/lib/router/layer.js:95:5)
+    at next (/usr/src/app/node_modules/express/lib/router/route.js:144:13)
+    at Route.dispatch (/usr/src/app/node_modules/express/lib/router/route.js:114:3)
+    at Layer.handle [as handle_request] (/usr/src/app/node_modules/express/lib/router/layer.js:95:5)
+    at /usr/src/app/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/usr/src/app/node_modules/express/lib/router/index.js:346:12)</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>server-error</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>the server throws an uncaught error and returns http 500; no user-friendly message is shown and the upload is lost. error: request entity too large</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>the server should accept files up to configured limit (e.g., 25mb), or return a clear 4xx error with a helpful message if the file is too large.</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Increase server file upload limit. In Express: use multer with limits: { fileSize: 10 * 1024 * 1024 }. In nginx: set client_max_body_size 10M; Add proper validation and user-friendly error messages for file size limits.</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">4. App crashes when saving user profile</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">When user clicks Save button in profile settings, the app crashes with a white screen. This happens every time.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Windows 11</span>
+        <span class="env-tag">🌐 Chrome 120.0</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">TypeError: Cannot read property &#039;name&#039; of null at ProfilePage.handleSave (Profile.jsx:45)</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>crash</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>Application crashes or displays blank/white screen</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>Application should remain stable and display content</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Add null checks: `if (data &amp;&amp; data.property)` before accessing. Use optional chaining: `data?.property`. Add error boundaries: wrap components with try-catch. Verify form data is properly validated before saving.</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">5. Database connection timeout</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">Application fails to connect to the database after 30 seconds. Users see &#039;Service Unavailable&#039; error.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Ubuntu 22.04</span>
+        <span class="env-tag">🌐 N/A </span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">Error: connect ETIMEDOUT ***.***.***.***:5432 at TCPConnectWrap.afterConnect</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>unknown</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>Application exhibits unexpected behavior</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>Application should function normally</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Please review the error logs and stack trace for more details</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">6. Login button not responding</div>
+      <span class="badge badge-pending">PENDING</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">When I click the login button, nothing happens. The button doesn&#039;t show any visual feedback and no API call is made.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 macOS</span>
+        <span class="env-tag">🌐 Chrome 120.0</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">Uncaught TypeError: Cannot read properties of undefined (reading &#039;handleLogin&#039;) at LoginButton.onClick (Login.jsx:23:15)</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-content" style="background-color: #fef3c7; border-color: #fbbf24;">
+        <p style="color: #92400e; font-weight: bold;">⏳ Analysis Pending</p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">7. Dark Mode setting resets to Light after page reload</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">When a user enables Dark Mode from the Appearance settings, the app switches to dark theme correctly. 
+However, after refreshing the page or reopening the app, the theme reverts back to Light mode. 
+
+Steps to reproduce:
+1. Log in to the app.
+2. Go to Settings → Appearance.
+3. Turn on &quot;Dark Mode&quot;.
+4. Refresh the browser or reopen the app.
+5. Notice that the theme is back to Light mode.
+
+Expected: The Dark Mode preference should persist across sessions.
+Actual: The setting resets every time the page reloads.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 macOS</span>
+        <span class="env-tag">🌐 Firefox 121.0</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">ReferenceError: localStorage is not defined
+    at saveThemePreference (src/utils/theme.js:22:15)
+    at toggleDarkMode (src/components/AppearanceSettings.jsx:48:9)
+    at HTMLButtonElement.onclick (src/components/AppearanceSettings.jsx:77:18)</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>unknown</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>the setting resets every time the page reloads. referenceerror: localstorage is not defined</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>the dark mode preference should persist across sessions.</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Please review the error logs and stack trace for more details</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: mock-trainer</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">8. App crashes when saving profile</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">When clicking Save button in Settings, the app shows a white screen</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Windows 11</span>
+        <span class="env-tag">🌐 Chrome 119.0</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">TypeError: Cannot read property &#039;value&#039; of undefined at SettingsPage.jsx:45</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>crash</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>Application crashes or displays blank/white screen</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>Application should remain stable and display content</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Check for null/undefined values before accessing properties. Add defensive checks like `if (element &amp;&amp; element.value)` before using DOM elements. Verify event handlers are properly bound.</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: mock-trainer</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">9. Settings Save Button Crash</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">User clicks Save in Settings and app crashes with white screen</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Windows 11</span>
+        <span class="env-tag">🌐 Chrome 119.0.6045.140</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">TypeError: Cannot read property &#039;save&#039; of undefined at SettingsPage.jsx:45</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>mock-category</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>Mocked actual behavior — check stacktrace</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>Mocked expected behavior</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Mocked suggestion</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: mock-trainer</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">10. App crashes when clicking Save</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">The app shows a white screen when I click Save in Settings</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Windows 11</span>
+        <span class="env-tag">🌐 Chrome 119.0</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">Error: Cannot read property &#039;save&#039; of undefined at SettingsPage.jsx:45</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>crash</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>Application crashes or displays blank/white screen</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>Application should remain stable and display content</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Add null checks: `if (data &amp;&amp; data.property)` before accessing. Use optional chaining: `data?.property`. Add error boundaries: wrap components with try-catch. Verify form data is properly validated before saving.</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">11. App crashes when clicking &quot;Save&quot; on the Settings page</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">When I open the Settings page and click the Save button after updating my display name, the entire app crashes and I see a blank white screen. This happens every time I try to save new profile information. I tried reloading the page and re-opening the app, but the error occurs consistently. Steps to reproduce:
+
+1. Log in as any user.
+2. Go to Settings → Profile.
+3. Change the Display Name field.
+4. Click the Save button.
+5. Observe the app crash / white screen.
+
+Expected: the profile should save and a success toast should appear.
+Actual: the app crashes and the page goes white.</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 Windows</span>
+        <span class="env-tag">🌐 Chrome 119.0.6045.140</span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">TypeError: Cannot read property &#039;value&#039; of undefined
+    at SaveButton.handleClick (src/components/Settings/SaveButton.jsx:45:27)
+    at HTMLUnknownElement.callCallback (node_modules/react-dom/cjs/react-dom.development.js:390:14)
+    at Object.invokeGuardedCallbackDev (node_modules/react-dom/cjs/react-dom.development.js:439:16)
+    at invokeGuardedCallback (node_modules/react-dom/cjs/react-dom.development.js:496:31)
+    at commitRootImpl (node_modules/react-dom/cjs/react-dom.development.js:22365:11)
+    at unstable_runWithPriority (node_modules/scheduler/cjs/scheduler.development.js:653:12)
+    at runWithPriority$1 (node_modules/react-dom/cjs/react-dom.development.js:11039:10)
+    at commitRoot (node_modules/react-dom/cjs/react-dom.development.js:22099:3)</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>crash</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>the app crashes and the page goes white. typeerror: cannot read property &#039;value&#039; of undefined</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>the profile should save and a success toast should appear.</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Add null checks: `if (data &amp;&amp; data.property)` before accessing. Use optional chaining: `data?.property`. Add error boundaries: wrap components with try-catch. Verify form data is properly validated before saving.</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="report">
+    <div class="report-header">
+      <div class="report-title">12. Test Bug</div>
+      <span class="badge badge-analyzed">ANALYZED</span>
+      
+      <span class="badge badge-analyzed">🔍 Stack Trace</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Description</div>
+      <div class="section-content">This is a test bug</div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-label">Environment</div>
+      <div>
+        <span class="env-tag">💻 macOS</span>
+        <span class="env-tag">🌐 Chrome </span>
+      </div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">Stack Trace</div>
+      <div class="stacktrace">Error at line 10</div>
+    </div>
+    
+
+    
+    <div class="section">
+      <div class="section-label">AI Analysis</div>
+      <div class="section-content">
+        <h3>Bug Category</h3>
+        <p>unknown</p>
+        
+        <h3>Actual Behavior</h3>
+        <p>Application exhibits unexpected behavior</p>
+        
+        <h3>Expected Behavior</h3>
+        <p>Application should function normally</p>
+        
+        <h3>Suggested Solution</h3>
+        <p>Please review the error logs and stack trace for more details</p>
+        
+        <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>Analyzed by: gpt-4o-mini</em></p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="footer">
+    <p><strong>Multimodal Bug Report Dataset</strong></p>
+    <p>Please cite this dataset when using it in research</p>
+    <p>Generated on 11/16/2025, 3:48:00 AM</p>
+  </div>
+</body>
+</html>

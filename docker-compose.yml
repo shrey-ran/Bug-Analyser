@@ -1,0 +1,43 @@
+# Multimodal Bug Summarizer - Docker Compose Configuration
+# Run with: docker-compose up --build
+
+services:
+  frontend:
+    build:
+      context: ./packages/frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./packages/frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./packages/backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./packages/backend:/app
+      - /app/node_modules
+    environment:
+      - TRAINER_URL=http://trainer:8000
+      - ADMIN_TOKEN=secure-admin-token-change-in-production
+    depends_on:
+      - trainer
+
+  trainer:
+    build:
+      context: ./services/trainer
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./services/trainer:/app
+      - ./models:/models
+    environment:
+      - PORT=8000
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}

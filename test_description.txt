@@ -1,0 +1,11 @@
+When I open the Settings page and click the Save button after updating my display name, the entire app crashes and I see a blank white screen.
+
+Steps to reproduce:
+1. Log in as any user
+2. Go to Settings → Profile
+3. Change the Display Name field
+4. Click the Save button
+5. Observe the app crash with white screen
+
+Expected: Profile should save and show success message
+Actual: App crashes and shows white screen
