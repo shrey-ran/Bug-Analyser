@@ -59,7 +59,7 @@ jobs:
           VITE_API_URL: http://localhost:4000
       
       - name: Upload frontend build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success()
         with:
           name: frontend-build-${{ matrix.node-version }}
