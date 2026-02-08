@@ -297,11 +297,7 @@ docker compose down
 
 This project is licensed under the MIT License.
 
-## 👥 Authors
-
-- Your Name - Initial work
-
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Yarn Workspaces for monorepo management
 - FastAPI for the Python inference service
